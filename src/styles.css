@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+@import "assets/layout/styles/layout/layout.css";
+
+@import "primeflex/primeflex.css";
+@import "primeicons/primeicons.css";
+/* @import "primeng/resources/themes/lara-light-blue/theme.css"; */
+/* @import "primeng/resources/themes/lara-dark-blue/theme.css"; */
+@import "primeng/resources/primeng.css";
+
+.card {
+    background: var(--surface-card);
+    border: 1px solid var(--surface-border);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--card-shadow);
+    border-radius: 12px;
+  }

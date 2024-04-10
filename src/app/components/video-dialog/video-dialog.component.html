@@ -1,0 +1,130 @@
+<div
+  class="w-full flex flex-column justify-content-center align-items-center gap-3"
+>
+  <iframe
+    class="w-full h-12rem md:h-30rem"
+    [src]="safeVideoUrl"
+    [title]="videoData.snippet.title"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen
+  ></iframe>
+  <div class="flex flex-column gap-2 w-full">
+    <label for="additionalParam">Want to add some additional param?</label>
+    <textarea
+      [disabled]="generatingTranscript"
+      class="w-full"
+      id="additionalParam"
+      placeholder="e.g. Explain it to me like I'm a 5-year-old child..."
+      [(ngModel)]="additionalPrompt"
+      rows="5"
+      cols="30"
+      pInputTextarea
+    ></textarea>
+  </div>
+  <p-button
+    label="Generate"
+    styleClass="w-full md:w-max"
+    (onClick)="generate(videoUrl)"
+    loadingIcon="pi pi-cog"
+    icon="pi pi-cog"
+    [loading]="generatingTranscript"
+  ></p-button>
+  <div class="card shadow-2 w-full">
+    <p-tabView>
+      <p-tabPanel header="Transcription">
+        <p
+          *ngIf="
+            !generatingTranscript && !transcription && !noTranscriptionMessage
+          "
+        >
+          Start by pasting a YouTube URL then generate...
+        </p>
+        <div
+          class="w-full bg-red-50 border-1 border-red-500 p-2 border-round"
+          *ngIf="
+            !generatingTranscript && !transcription && noTranscriptionMessage
+          "
+        >
+          <p class="text-red-500">{{ noTranscriptionMessage }}</p>
+        </div>
+        <p-panel
+          *ngIf="!generatingTranscript && transcription"
+          [toggleable]="true"
+        >
+          <ng-template pTemplate="header">
+            <a [href]="url" target="_blank">{{ url }}</a>
+          </ng-template>
+          <p>
+            {{ transcription }}
+          </p>
+        </p-panel>
+        <p-skeleton
+          *ngIf="generatingTranscript"
+          width="100%"
+          height="250px"
+        ></p-skeleton>
+      </p-tabPanel>
+      <p-tabPanel
+        header="Summary"
+        *ngIf="!generatingSummary && summary && transcription"
+      >
+        <div class="flex flex-column w-full gap-3">
+          <p-toolbar *ngIf="!generatingSummary && summary">
+            <div class="p-toolbar-group-start">
+              <button
+                pTooltip="DOCX"
+                (click)="generateDocx()"
+                tooltipPosition="bottom"
+                pButton
+                icon="pi pi-file"
+                class="mr-2"
+              ></button>
+              <button
+                pTooltip="PDF"
+                (click)="generatePdf()"
+                tooltipPosition="bottom"
+                pButton
+                icon="pi pi-file-pdf"
+                class="mr-2 p-button-waring"
+              ></button>
+              <p-button
+                *ngIf="!copied"
+                (onClick)="copyText()"
+                pTooltip="COPY"
+                tooltipPosition="bottom"
+                icon="pi pi-book"
+              ></p-button>
+              <span *ngIf="copied" class="text-color-secondary text-base"
+                >Copied</span
+              >
+            </div>
+            <div class="p-toolbar-group-end">
+              <p-button
+                label="Save"
+                styleClass="w-full md:w-max"
+                (onClick)="save(videoUrl)"
+                loadingIcon="pi pi-save"
+                icon="pi pi-save"
+                [loading]="saving"
+              ></p-button>
+            </div>
+          </p-toolbar>
+          <div
+            *ngIf="!generatingSummary && summary"
+            class="w-full flex flex-column gap-3"
+          >
+            <h3 class="text-color-secondary m-0">{{ summary.title }}</h3>
+            <p>{{ summary.content }}</p>
+          </div>
+        </div>
+        <p-skeleton
+          *ngIf="generatingSummary"
+          width="100%"
+          height="250px"
+        ></p-skeleton>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+</div>

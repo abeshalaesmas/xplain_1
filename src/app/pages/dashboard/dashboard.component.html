@@ -1,0 +1,10 @@
+<div class="card">
+    <h3>Youtube Video Summaries</h3>
+
+    <!-- @for (item of data; track $index) {
+        <app-summarized-item [data]="item"/>
+    } -->
+  <p *ngIf="data.length == 0">There's nothing in here...</p>
+
+    <app-summarized-item [data]="data" (removeEvent)="remove($event)"/>
+</div>

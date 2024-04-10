@@ -1,0 +1,25 @@
+<div class="w-full flex flex-column gap-3">
+  @for (item of data; track $index) {
+    <p-panel [toggleable]="true" [header]="item.title">
+      <ng-template pTemplate="footer">
+          <a [href]="item.url">{{item.url}}</a>
+      </ng-template>
+     
+      <p-toolbar styleClass="mb-2">
+        <div class="p-toolbar-group-start">
+          <p-button pTooltip="PDF" tooltipPosition="bottom" icon="pi pi-file-pdf" styleClass="p-button-warning mr-2" (onClick)="exportAsPDF(item)"></p-button>
+          <p-button pTooltip="DOCX" tooltipPosition="bottom" icon="pi pi-file" styleClass="p-button-info mr-2" (onClick)="exportAsDOCX(item)"></p-button>
+          <p-button pTooltip="COPY" tooltipPosition="bottom" *ngIf="!item.copied" icon="pi pi-book" (onClick)="copyText(item)"></p-button>
+          <span *ngIf="item.copied" styleClass="text-color-secondary text-sm">copied</span>
+        </div>
+       
+        <div class="p-toolbar-group-end">
+          <p-button pTooltip="DELETE" tooltipPosition="bottom" icon="pi pi-trash" styleClass="p-button-danger" (onClick)="remove(item)"></p-button>
+        </div>
+        </p-toolbar>
+      <p class="m-0">
+          {{item.content}}
+      </p>
+  </p-panel>
+  }
+</div>
